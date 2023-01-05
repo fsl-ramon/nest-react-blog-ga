@@ -4,13 +4,20 @@ import "./index.css";
 import App from "./App";
 import { Auth0Provider } from "@auth0/auth0-react";
 import { BrowserRouter } from "react-router-dom";
+import { getConfig } from "./config";
+
+const config = getConfig();
+
+const providerConfig = {
+  domain: config.domain,
+  clientId: config.clientId,
+  ...(config.audience ? { audience: config.audience } : null),
+  redirectUri: window.location.origin,
+  useRefreshTokens: true,
+};
 
 ReactDOM.render(
-  <Auth0Provider
-    domain="dev-o4oau070lcbfht7w.us.auth0.com"
-    clientId="NXCmRS59dXIGMXqJ59jcHr8JUCM6yXNw"
-    redirectUri={window.location.origin}
-  >
+  <Auth0Provider {...providerConfig}>
     <BrowserRouter>
       <App />
     </BrowserRouter>
